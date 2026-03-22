@@ -1,0 +1,103 @@
+   ▲ Next.js 15.3.3 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.11.104:3000
+   - Environments: .env
+
+ ✓ Starting...
+ ○ Compiling middleware ...
+ ✓ Compiled middleware in 802ms
+ ✓ Ready in 5.3s
+ ○ Compiling / ...
+ ✓ Compiled / in 24.7s
+ GET / 200 in 27120ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 1521ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 2025ms
+ GET / 200 in 380ms
+ ✓ Compiled in 1088ms
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 2.1s
+No ANTHROPIC_API_KEY found, using mock provider
+ POST /api/chat 200 in 16683ms
+ ✓ Compiled in 254ms
+ ✓ Compiled in 395ms
+No ANTHROPIC_API_KEY found, using mock provider
+ POST /api/chat 200 in 7867ms
+   Reload env: .env
+ GET / 200 in 504ms
+ POST / 200 in 422ms
+ POST / 200 in 137ms
+ ○ Compiling /[projectId] ...
+ ✓ Compiled /[projectId] in 13.1s
+ GET /cmn0f4mwt0004fu6wkz51ixsb 200 in 15423ms
+ POST / 200 in 333ms
+ POST / 200 in 156ms
+ GET /cmn0f4mwt0004fu6wkz51ixsb 200 in 334ms
+ GET /cmn0f4mwt0004fu6wkz51ixsb 200 in 193ms
+ POST /cmn0f4mwt0004fu6wkz51ixsb 200 in 206ms
+ POST /cmn0f4mwt0004fu6wkz51ixsb 200 in 234ms
+ GET / 307 in 357ms
+ GET /cmn0f4mwt0004fu6wkz51ixsb 200 in 1461ms
+ POST /cmn0f4mwt0004fu6wkz51ixsb 200 in 208ms
+ GET /cmn0f4mwt0004fu6wkz51ixsb 200 in 880ms
+ POST /cmn0f4mwt0004fu6wkz51ixsb 200 in 329ms
+ GET /cmn0f4mwt0004fu6wkz51ixsb 200 in 627ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 595ms
+ POST /cmn0f4mwt0004fu6wkz51ixsb 200 in 288ms
+ GET /cmn0f4mwt0004fu6wkz51ixsb 200 in 354ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 356ms
+ POST /cmn0f4mwt0004fu6wkz51ixsb 200 in 197ms
+{
+  error: [Error [AI_APICallError]: invalid x-api-key] {
+    cause: undefined,
+    url: 'https://api.anthropic.com/v1/messages',
+    requestBodyValues: {
+      model: 'claude-haiku-4-5',
+      max_tokens: 10000,
+      temperature: 0,
+      top_k: undefined,
+      top_p: undefined,
+      stop_sequences: undefined,
+      system: [Array],
+      messages: [Array],
+      tools: [Array],
+      tool_choice: [Object],
+      stream: true
+    },
+    statusCode: 401,
+    responseHeaders: {
+      'cf-cache-status': 'DYNAMIC',
+      'cf-ray': '9dfec3a77a52d9d2-FRA',
+      connection: 'keep-alive',
+      'content-encoding': 'gzip',
+      'content-security-policy': "default-src 'none'; frame-ancestors 'none'",
+      'content-type': 'application/json',
+      date: 'Sat, 21 Mar 2026 17:44:23 GMT',
+      'request-id': 'req_011CZGe86t5EbfD3kgeaULQj',
+      server: 'cloudflare',
+      'server-timing': 'x-originResponse;dur=123',
+      'set-cookie': '_cfuvid=8rLyfdV2mlh6QbiBNzMBrGrQP0p5Koqcqanq0Ubq8Zc-1774115062.9564376-1.0.1.1-FtmYBPHqczcNSS9gsvm6x1YnOkvkkYSGFZ_kdUQYg9o; HttpOnly; SameSite=None; Secure; Path=/; Domain=api.anthropic.com',
+      'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+      'transfer-encoding': 'chunked',
+      vary: 'Accept-Encoding',
+      'x-envoy-upstream-service-time': '122',
+      'x-robots-tag': 'none',
+      'x-should-retry': 'false'
+    },
+    responseBody: '{"type":"error","error":{"type":"authentication_error","message":"invalid x-api-key"},"request_id":"req_011CZGe86t5EbfD3kgeaULQj"}',
+    isRetryable: false,
+    data: { type: 'error', error: [Object] }
+  }
+}
+ POST /api/chat 200 in 1189ms
+ GET /cmn0f4mwt0004fu6wkz51ixsb 200 in 767ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 655ms
+ POST /cmn0f4mwt0004fu6wkz51ixsb 200 in 272ms
+ ✓ Compiled in 509ms
+ ✓ Compiled in 510ms
+ GET /cmn0f4mwt0004fu6wkz51ixsb 200 in 1739ms
+ POST /cmn0f4mwt0004fu6wkz51ixsb 200 in 268ms
+ GET /cmn0f4mwt0004fu6wkz51ixsb 200 in 1294ms
+ POST /cmn0f4mwt0004fu6wkz51ixsb 200 in 271ms
+ GET / 200 in 1413ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 487ms
