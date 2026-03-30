@@ -51,6 +51,10 @@ function Button({
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
+      onClick={(e) => {
+        console.log("clicked");
+        props.onClick?.(e);
+      }}
       {...props}
     />
   )

@@ -6,7 +6,7 @@ import {
   createImportMap,
   createPreviewHTML,
 } from "@/lib/transform/jsx-transformer";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Zap } from "lucide-react";
 
 export function PreviewFrame() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -20,12 +20,10 @@ export function PreviewFrame() {
       try {
         const files = getAllFiles();
 
-        // Clear error first when we have files
         if (files.size > 0 && error) {
           setError(null);
         }
 
-        // Find the entry point - look for App.jsx, App.tsx, index.jsx, or index.tsx
         let foundEntryPoint = entryPoint;
         const possibleEntries = [
           "/App.jsx",
@@ -42,7 +40,6 @@ export function PreviewFrame() {
             foundEntryPoint = found;
             setEntryPoint(found);
           } else if (files.size > 0) {
-            // Just use the first .jsx/.tsx file found
             const firstJSX = Array.from(files.keys()).find(
               (path) => path.endsWith(".jsx") || path.endsWith(".tsx")
             );
@@ -62,7 +59,6 @@ export function PreviewFrame() {
           return;
         }
 
-        // We have files, so it's no longer the first load
         if (isFirstLoad) {
           setIsFirstLoad(false);
         }
@@ -79,14 +75,11 @@ export function PreviewFrame() {
 
         if (iframeRef.current) {
           const iframe = iframeRef.current;
-
-          // Need both allow-scripts and allow-same-origin for blob URLs in import map
           iframe.setAttribute(
             "sandbox",
             "allow-scripts allow-same-origin allow-forms"
           );
           iframe.srcdoc = previewHTML;
-
           setError(null);
         }
       } catch (err) {
@@ -101,49 +94,59 @@ export function PreviewFrame() {
   if (error) {
     if (error === "firstLoad") {
       return (
-        <div className="h-full flex items-center justify-center p-8 bg-gray-50">
-          <div className="text-center max-w-md">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4">
-              <svg
-                className="h-8 w-8 text-blue-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
+        <div className="h-full flex items-center justify-center bg-zinc-950 relative overflow-hidden">
+          {/* Dot grid background */}
+          <div className="absolute inset-0 dot-grid-bg opacity-40" />
+          {/* Radial gradient vignette */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_#09090b_80%)]" />
+
+          <div className="relative text-center max-w-sm animate-fade-in-up">
+            {/* Glowing icon */}
+            <div className="relative inline-flex mb-6">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-2xl shadow-indigo-500/40">
+                <Zap className="h-8 w-8 text-white" />
+              </div>
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 blur-2xl opacity-40 animate-glow-pulse" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Welcome to UI Generator
+
+            <h3 className="text-lg font-semibold text-white mb-2 tracking-tight">
+              Your canvas awaits
             </h3>
-            <p className="text-sm text-gray-600 mb-3">
-              Start building React components with AI assistance
+            <p className="text-zinc-500 text-sm leading-relaxed">
+              Describe a component in the chat and it will render here instantly — no setup, no files.
             </p>
-            <p className="text-xs text-gray-500">
-              Ask the AI to create your first component to see it live here
-            </p>
+
+            {/* Feature pills */}
+            <div className="flex items-center justify-center gap-2 mt-6 flex-wrap">
+              {["Live Preview", "Tailwind CSS", "React 18"].map((f) => (
+                <span
+                  key={f}
+                  className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-zinc-800/80 border border-white/[0.06] text-zinc-400"
+                >
+                  {f}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       );
     }
 
     return (
-      <div className="h-full flex items-center justify-center p-8 bg-gray-50">
-        <div className="text-center max-w-md">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-            <AlertCircle className="h-8 w-8 text-gray-400" />
+      <div className="h-full flex items-center justify-center bg-zinc-950 relative overflow-hidden">
+        <div className="absolute inset-0 dot-grid-bg opacity-30" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_#09090b_80%)]" />
+
+        <div className="relative text-center max-w-sm animate-fade-in-up">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-zinc-800 border border-white/[0.06] mb-5">
+            <AlertCircle className="h-7 w-7 text-zinc-500" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            No Preview Available
+          <h3 className="text-base font-semibold text-white mb-2">
+            Preview unavailable
           </h3>
-          <p className="text-sm text-gray-500">{error}</p>
-          <p className="text-xs text-gray-400 mt-2">
-            Start by creating a React component using the AI assistant
+          <p className="text-sm text-zinc-500 leading-relaxed mb-1">{error}</p>
+          <p className="text-xs text-zinc-600">
+            Ask the AI to create a component to see it here.
           </p>
         </div>
       </div>

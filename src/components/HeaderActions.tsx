@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { Plus, LogOut, FolderOpen, ChevronDown } from "lucide-react";
 import { AuthDialog } from "@/components/auth/AuthDialog";
 import { signOut } from "@/actions";
@@ -46,7 +45,6 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
   const [initialLoading, setInitialLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Load projects initially
   useEffect(() => {
     if (user && projectId) {
       getProjects()
@@ -56,7 +54,6 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
     }
   }, [user, projectId]);
 
-  // Refresh projects when popover opens
   useEffect(() => {
     if (user && projectsOpen) {
       getProjects().then(setProjects).catch(console.error);
@@ -95,13 +92,19 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
   if (!user) {
     return (
       <>
-        <div className="flex gap-2">
-          <Button variant="outline" className="h-8" onClick={handleSignInClick}>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleSignInClick}
+            className="h-8 px-3.5 text-xs font-medium text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition-all duration-150"
+          >
             Sign In
-          </Button>
-          <Button className="h-8" onClick={handleSignUpClick}>
+          </button>
+          <button
+            onClick={handleSignUpClick}
+            className="h-8 px-3.5 text-xs font-medium rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/20 transition-all duration-150 hover:shadow-indigo-500/30 hover:scale-[1.02]"
+          >
             Sign Up
-          </Button>
+          </button>
         </div>
         <AuthDialog
           open={authDialogOpen}
@@ -117,21 +120,27 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
       {!initialLoading && (
         <Popover open={projectsOpen} onOpenChange={setProjectsOpen}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="h-8 gap-2" role="combobox">
-              <FolderOpen className="h-4 w-4" />
-              {currentProject ? currentProject.name : "Select Project"}
+            <button className="h-8 px-3 flex items-center gap-2 text-xs font-medium text-zinc-400 hover:text-white rounded-lg border border-white/[0.08] hover:border-white/[0.16] hover:bg-zinc-800/60 transition-all duration-150">
+              <FolderOpen className="h-3.5 w-3.5" />
+              <span>{currentProject ? currentProject.name : "Projects"}</span>
               <ChevronDown className="h-3 w-3 opacity-50" />
-            </Button>
+            </button>
           </PopoverTrigger>
-          <PopoverContent className="w-[300px] p-0" align="end">
-            <Command>
+          <PopoverContent
+            className="w-[280px] p-0 bg-zinc-900 border border-white/[0.08] shadow-xl shadow-black/50 rounded-xl"
+            align="end"
+          >
+            <Command className="bg-transparent">
               <CommandInput
                 placeholder="Search projects..."
                 value={searchQuery}
                 onValueChange={setSearchQuery}
+                className="text-zinc-300 placeholder:text-zinc-600 border-b border-white/[0.06]"
               />
               <CommandList>
-                <CommandEmpty>No projects found.</CommandEmpty>
+                <CommandEmpty className="py-6 text-xs text-zinc-600 text-center">
+                  No projects found.
+                </CommandEmpty>
                 <CommandGroup>
                   {filteredProjects.map((project) => (
                     <CommandItem
@@ -142,10 +151,9 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
                         setProjectsOpen(false);
                         setSearchQuery("");
                       }}
+                      className="text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg mx-1 my-0.5"
                     >
-                      <div className="flex flex-col">
-                        <span className="font-medium">{project.name}</span>
-                      </div>
+                      <span className="text-sm font-medium">{project.name}</span>
                     </CommandItem>
                   ))}
                 </CommandGroup>
@@ -155,20 +163,21 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
         </Popover>
       )}
 
-      <Button className="flex items-center gap-2 h-8" onClick={handleNewDesign}>
-        <Plus className="h-4 w-4" />
+      <button
+        onClick={handleNewDesign}
+        className="h-8 px-3.5 flex items-center gap-1.5 text-xs font-medium rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/20 transition-all duration-150 hover:scale-[1.02]"
+      >
+        <Plus className="h-3.5 w-3.5" />
         New Design
-      </Button>
+      </button>
 
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-8 w-8"
+      <button
         onClick={handleSignOut}
         title="Sign out"
+        className="h-8 w-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-all duration-150"
       >
-        <LogOut className="h-4 w-4" />
-      </Button>
+        <LogOut className="h-3.5 w-3.5" />
+      </button>
     </div>
   );
 }

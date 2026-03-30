@@ -11,5 +11,7 @@
 
 if (typeof globalThis !== "undefined" && typeof window === "undefined") {
   delete globalThis.localStorage;
+ 
+  
   delete globalThis.sessionStorage;
 }

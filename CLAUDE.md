@@ -86,6 +86,20 @@ Generated client outputs to `src/generated/prisma/` (not the default location).
 3. Looks for entry point: `App.jsx` → `App.tsx` → `index.jsx` → `index.tsx`
 4. Injects Tailwind CSS from CDN into the iframe document
 
+### AI tools
+
+The two tools exposed to Claude live in `src/lib/tools/`:
+- `str_replace_editor` (`str-replace.ts`) — `view`, `create`, `str_replace`, `insert`, `undo_edit` on the VFS
+- `file_manager` (`file-manager.ts`) — rename and delete operations
+
+The API route reconstructs a fresh `VirtualFileSystem` from the serialized `files` payload sent by the client on every request, applies tool calls during streaming, then serializes it back to the DB on `onFinish`.
+
 ### Testing
 
-Vitest with jsdom, `@vitejs/plugin-react`, and `vite-tsconfig-paths` (so `@/` aliases resolve). Test files live in `__tests__/` directories co-located with the code they test. Key test areas: `VirtualFileSystem`, JSX transformer, chat context, and chat/editor components.
+Vitest with jsdom, `@vitejs/plugin-react`, and `vite-tsconfig-paths` so `@/` aliases resolve. Test files live in `__tests__/` directories co-located with the code they test. Key test areas: `VirtualFileSystem`, JSX transformer, chat context, and chat/editor components.
+
+```bash
+npx vitest run                                          # run all tests once
+npx vitest run src/lib/__tests__/file-system.test.ts   # single file
+npx vitest                                             # watch mode
+```
