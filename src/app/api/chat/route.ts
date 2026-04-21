@@ -10,31 +10,34 @@ import { generationPrompt } from "@/lib/prompts/generation";
 
 export async function POST(req: Request) {
   const {
-    messages,
+    messages: rawMessages,
     files,
     projectId,
   }: { messages: any[]; files: Record<string, FileNode>; projectId?: string } =
     await req.json();
 
-  messages.unshift({
+  const systemMessage = {
     role: "system",
     content: generationPrompt,
     providerOptions: {
       anthropic: { cacheControl: { type: "ephemeral" } },
     },
-  });
+  };
+
+  // Only last 3 messages sent to the model — reduces token cost per request
+  const contextMessages = [systemMessage, ...rawMessages.slice(-3)];
 
   // Reconstruct the VirtualFileSystem from serialized data
   const fileSystem = new VirtualFileSystem();
   fileSystem.deserializeFromNodes(files);
 
   const model = getLanguageModel();
-  // Use fewer steps for mock provider to prevent repetition
   const isMockProvider = !process.env.ANTHROPIC_API_KEY;
   const result = streamText({
     model,
-    messages,
-    maxTokens: 10_000,
+    messages: contextMessages,
+    maxTokens: 1200,
+    temperature: 0.4,
     maxSteps: isMockProvider ? 4 : 40,
     onError: (err: any) => {
       console.error(err);
@@ -47,18 +50,16 @@ export async function POST(req: Request) {
       // Save to project if projectId is provided and user is authenticated
       if (projectId) {
         try {
-          // Check if user is authenticated
           const session = await getSession();
           if (!session) {
             console.error("User not authenticated, cannot save project");
             return;
           }
 
-          // Get the messages from the response
+          // Persist full history (rawMessages), not the sliced context
           const responseMessages = response.messages || [];
-          // Combine original messages with response messages
           const allMessages = appendResponseMessages({
-            messages: [...messages.filter((m) => m.role !== "system")],
+            messages: rawMessages,
             responseMessages,
           });
 
